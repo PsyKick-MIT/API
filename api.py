@@ -1,9 +1,20 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from Firebase import Firestore
 from Questions import getData
 from Constants import *
 import spacy
 app = FastAPI()
+
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 firestore= Firestore(None)
 
@@ -16,16 +27,16 @@ def fetchModel():
 @app.get("/questions/{question}")
 async def get_questions(question :str):
     question = question.replace("%20", " ")
-    return getData(question, firestore)
+    return { "questions": getData(question, firestore)}
 
 
 @app.get("/{data}")
 async def read_item(data):
     if type(data) is str:
         if data == "questions":
-            return firestore.GetQuestions()
+            return { "questions": firestore.GetQuestions()}
         if data == "answers":
-            return firestore.GetAnswers()
+            return { "answers": firestore.GetAnswers()}
 
 @app.get("/")
 async def root():
