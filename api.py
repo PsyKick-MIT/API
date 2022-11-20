@@ -1,9 +1,17 @@
 from fastapi import FastAPI
 from Firebase import Firestore
 from Questions import getData
+from Constants import *
+import spacy
 app = FastAPI()
 
 firestore= Firestore(None)
+
+def fetchModel():
+    try:
+        spacy.load(model)
+    except:
+        spacy.cli.download(model)
 
 @app.get("/questions/{question}")
 async def get_questions(question :str):
@@ -23,3 +31,5 @@ async def read_item(data):
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
+
+fetchModel()
