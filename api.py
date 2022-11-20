@@ -16,7 +16,6 @@ def fetchModel():
 @app.get("/questions/{question}")
 async def get_questions(question :str):
     question = question.replace("%20", " ")
-    print(question)
     return getData(question, firestore)
 
 

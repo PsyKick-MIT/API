@@ -51,6 +51,15 @@ class Firestore:
             doc_ref_answers.set(json.loads(json.dumps(data)))
 
 
+    def GetQuestion(self, query):
+        docs = self.collection.stream()
+        document :dict = None
+        for doc in docs:
+            if doc.id == self.document_name:
+                document = doc.to_dict()
+        questions = list(document.keys())
+        return questions[list(document.values()).index(query)]
+
     def GetQuestions(self):
         docs = self.collection.stream()
         for doc in docs:
