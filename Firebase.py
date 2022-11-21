@@ -67,6 +67,18 @@ class Firestore:
                 ret = list(doc.to_dict().keys())
                 return ret
 
+    def GetAnswer(self, question):
+        docs = self.collection.stream()
+        if question[-1] != '.':
+            question += "?"
+        data = {}
+        for doc in docs:
+            if doc.id == self.document_name:
+                data = doc.to_dict();
+                break
+        if data is not None:
+            return data[question]
+        return None
 
     def GetAnswers(self):
         docs = self.collection.stream()

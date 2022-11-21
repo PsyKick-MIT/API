@@ -29,6 +29,11 @@ async def get_questions(question :str):
     question = question.replace("%20", " ")
     return { "questions": getData(question, firestore)}
 
+@app.get("/answer/{question}")
+async def get_questions(question :str):
+    question = question.replace("%20", " ")
+    return { "answer": firestore.GetAnswer(question)}
+
 
 @app.get("/{data}")
 async def read_item(data):
